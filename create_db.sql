@@ -1,0 +1,5 @@
+CREATE DATABASE IF NOT EXISTS project CHARACTER SET = 'utf8' COLLATE = 'utf8_general_ci';
+USE project;
+CREATE TABLE IF NOT EXISTS `project`.`projects` ( `id` INT NOT NULL AUTO_INCREMENT COMMENT 'ID (автогенерируемый)' , `name` VARCHAR(255) NOT NULL COMMENT 'Название проекта' , `url` VARCHAR(255) NOT NULL COMMENT 'URL сайта' , `platform` VARCHAR(63) NOT NULL COMMENT 'Тип платформы (Wordpress, Bitrix, Custom, Other)' , `status` VARCHAR(63) NOT NULL COMMENT 'Статус (development, production, maintenance, archived)' , `description` TEXT NULL COMMENT 'Описание (опционально)' , `date_create` DATE NOT NULL COMMENT 'Дата создания' , `date_update` DATE NOT NULL COMMENT 'Дата последнего обновления' , PRIMARY KEY (`id`), FULLTEXT `idx_platform` (`platform`), FULLTEXT `idx_status` (`status`)) ENGINE = InnoDB COMMENT = 'Управление проектами (Projects)';
+INSERT INTO `projects`( `id`, `name`, `url`, `platform`, `status`, `description`, `date_create`, `date_update`) VALUES (NULL, "ARTGorka", "artgorka.ru", "Wordpress", "production", "", NOW(), NOW());
+
