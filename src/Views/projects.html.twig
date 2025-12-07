@@ -1,9 +1,9 @@
 <html>
 <head>
 <script language="javascript">
-function ajax_request(method){
+function ajax_request(method, url){
 const xhr = new XMLHttpRequest();  
-const url = '/api/projects/1';  
+//const url = '/api/projects/';  
 xhr.open(method, url, true);  
 xhr.setRequestHeader('Content-Type', 'application/json');  
 xhr.onreadystatechange = function() {  
@@ -18,15 +18,47 @@ xhr.send(data);
 }
 
 </script>
+<style>
+    body {font-family: Arial;}
+    textarea {width: 400px; height:100px;}
+    input {width: 400px;}
+</style>
 </head>
 <body>
 
-<h1>Project list</h1>
+<h1>Список проектов</h1>
 <table>
 <tr> <th>id</th> <th>name</th> <th>url</th> <th>platform</th> <th>status</th> <th>description</th> <th>date_create</th> <th>date_update</th></tr>
 {% for project in project_list %} <tr><td>1{{ project.id }}</td> <td>{{ project.name }}</td> <td>{{ project.url }}</td> <td>{{ project.platform_name }}</td> <td>{{ project.status_name }}</td> <td>{{ project.description }}</td> <td>{{ project.date_create }}</td> <td>{{ project.date_update }}</td></tr> {% endfor %}
 </table>
 <hr/>
-<span onclick="ajax_request('POST');">POST</span> <span onclick="ajax_request('GET');">GET</span> <span onclick="ajax_request('PUT');">PUT</span> <span onclick="ajax_request('DELETE');">DELETE</span>
+<h3>Cоздание проекта</h3>
+<textarea id="t1">{"name":"Name","url":"URL","platform":"3","status":"4","description":"","date_create":"2025-12-07","date_update":"2025-12-07"}</textarea><br/>
+<button onclick="ajax_request('POST','/api/projects');">POST</button><br/>
+<hr/>
+<h3>Полный список проектов</h3>
+<input type="text" value="/api/projects" id="i1"/><br/>
+<button onclick="ajax_request('GET','/api/projects');">GET</button> <br/><hr/>
+<h3>Получение проекта по ID</h3>
+<input type="text" value="/api/projects/1" id="i2"/><br/>
+<button onclick="ajax_request('GET','/api/projects1');">GET</button> <br/><hr/>
+<h3>Фильтрация по платформе</h3>
+<input type="text" value="/api/projects?platform=WordPress" id="i3"/><br/>
+<button onclick="ajax_request('GET','/api/projects?platform=WordPress');">GET</button> <br/><hr/>
+<h3>Фильтрация по статусу</h3>
+<input type="text" value="/api/projects?status=production" id="i4"/><br/>
+<button onclick="ajax_request('GET','/api/projects?status=production');">GET</button> <br/><hr/>
+<h3>Комбинированная фильтрация</h3>
+<input type="text" value="/api/projects?platform=Bitrix&status=development" id="i5"/><br/>
+<button onclick="ajax_request('GET','/api/projects?platform=Bitrix&status=development');">GET</button> <br/><hr/>
+<h3>Список проектов с пагинацией</h3>
+<input type="text" value="/api/projects?page=1&limit=10" id="i6"/><br/>
+<button onclick="ajax_request('GET','/api/projects?page=1&limit=10');">GET</button> <br/><hr/>
+<h3>Обновление проекта</h3>
+<input type="text" value="/api/projects/1" id="i7"/><br/>
+<button onclick="ajax_request('PUT','/api/projects/1');">PUT</button>  <br/><hr/>
+<h3>Удаление проекта</h3>
+<input type="text" value="/api/projects/1" id="i8"/><br/>
+<button onclick="ajax_request('DELETE','/api/projects/1');">DELETE</button><br/><hr/>
 </body>
 </html>
