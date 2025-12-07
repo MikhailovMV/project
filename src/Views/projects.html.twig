@@ -4,8 +4,9 @@
 <script language="javascript">
 function ajax_request(method, url,){
 const xhr = new XMLHttpRequest();  
-//const url = '/api/projects/';  
-xhr.open(method, url, true); 
+//const url = '/api/projects/'; 
+if (method == "CHECK") { xhr.open("POST", url, true); } else { xhr.open(method, url, true); }
+
 
 xhr.setRequestHeader('Content-Type', 'application/json');  
 xhr.onreadystatechange = function() {  
@@ -21,7 +22,11 @@ else
     if (method == "PUT"){
         xhr.send(document.getElementById('t2').value); 
     }else { 
+        if(method == "CHECK"){
+            xhr.send(url); 
+        }else { 
         xhr.send();
+    }  
     }  
 }
 
@@ -84,5 +89,10 @@ else
 <h3>Удаление проекта</h3>
 <input type="text" value="/api/projects/1" id="i8"/><br/>
 <button onclick="ajax_request('DELETE', document.getElementById('i8').value);">DELETE</button><br/><hr/>
+<h3>Проверка доступности сайта</h3>
+<input type="text" value="/api/projects/1/check" id="i9"/><br/>
+<button onclick="ajax_request('CHECK', document.getElementById('i9').value);">CHECK SITE</button><br/><hr/>
+
+
 </body>
 </html>

@@ -59,6 +59,7 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
             }
         $result = ModelProjects::insert_project($contents);
         $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
+        $status_code = 201;
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
         $data = array();
@@ -118,6 +119,16 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
         ->withStatus($status_code);
 });
 
+
+$app->post('/api/projects/{id}/check', function ($request, $response, $args) {
+    $status_code = 200;
+    $project_list = ModelProjects::project_list();
+    $project_statuses = ModelProjects::project_statuses();
+    $project_platforms = ModelProjects::project_platforms();
+    $twig = $this->get(Twig::class);
+    $response->getBody()->write($args['id']);
+    return $response->withStatus($status_code);
+});
 
 
 $app->run();
