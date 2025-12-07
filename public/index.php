@@ -54,6 +54,7 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
             if (json_last_error() === JSON_ERROR_NONE) {
                 $request = $request->withParsedBody($contents);
             }
+            ModelProjects::insert_project($contents);
         $payload = json_encode($contents);
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
