@@ -1,13 +1,26 @@
 <?php
 use DI\Container;
 use Slim\Factory\AppFactory;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../src/Model.php';
 
-$app = AppFactory::create();
+$container = new Container();
+
+// Set view in Container
+$container->set(Twig::class, function() {
+    return Twig::create(__DIR__ . '/../src/Views');
+});
+
+// Create App from container
+$app = AppFactory::createFromContainer($container);
+
+// Add Twig-View Middleware
+$app->add(TwigMiddleware::create($app, $container->get(Twig::class)));
 
 $customErrorHandler = function (
     Request $request,
@@ -32,4 +45,20 @@ $app->get('/', function ($request, $response) {
     return $response;
 });
 
+$app->get('/hello/{name}', function ($request, $response, $args) {
+    $viewData = [
+        'name' => $args['name'],
+    ];
+
+    $twig = $this->get(Twig::class);
+
+    return $twig->render($response, 'projects.html.twig', $viewData);
+})->setName('projects');
+
+
+
 $app->run();
+
+
+
+?>
