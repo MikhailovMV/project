@@ -10,13 +10,11 @@ class ModelProjects {
 
 
   $results = ORM::for_table('projects')
-      ->table_alias('p1')
-    //  ->select('p1.id, p1.status')
-    //  ->select('p3.platform_name')
-    //  ->select('p2.status_name')
-     // ->select('p1.date_create', 'p1.date_update')
-    //  ->join('platfors', array('p1.platform', '=', 'p2.platform_id'), 'p2')
-    //  ->join('statuses', array('p1.status', '=', 'p3.status_id'), 'p3')
+      ->select('projects.*')
+      ->select('platforms.platform_name')
+      ->select('statuses.status_name')
+      ->join('platforms', array('projects.platform', '=', 'platforms.platform_id'))
+      ->join('statuses', array('projects.status', '=', 'statuses.status_id'))
       ->find_many();
 
       return $results;
