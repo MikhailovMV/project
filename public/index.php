@@ -85,7 +85,6 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
                     $data = ModelProjects::project_list_filtered($platform, $status, $page, $limit);
             }else{
                     // Получение списка проектов
-                var_dump($platform);
                     $data = ModelProjects::project_list();
             }
          }else{
