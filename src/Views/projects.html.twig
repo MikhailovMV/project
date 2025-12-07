@@ -41,6 +41,19 @@ else
 {% for project in project_list %} <tr><td>{{ project.id }}</td> <td>{{ project.name }}</td> <td>{{ project.url }}</td> <td>{{ project.platform_name }}</td> <td>{{ project.status_name }}</td> <td>{{ project.description }}</td> <td>{{ project.date_create }}</td> <td>{{ project.date_update }}</td></tr> {% endfor %}
 </table>
 <a href="/" title="Refresh">Обновить</a>
+<h2>Список платфоорм</h2>
+<table>
+<tr> <th>id</th> <th>ID платформы</th> <th>Название платформы</th></tr>
+{% for platform in project_platforms %} <tr><td>{{ platform.id }}</td> <td>{{ platform.platform_id }}</td> <td>{{ platform.platform_name }}</td> </tr> {% endfor %}
+</table>
+<h2>Список статусов</h2>
+<table>
+<tr> <th>id</th> <th>ID статуса</th> <th>Название статуса</th></tr>
+{% for status in project_statuses %} <tr><td>{{ status.id }}</td> <td>{{ status.status_id }}</td> <td>{{ status.status_name }}</td> </tr> {% endfor %}
+</table>
+
+
+
 <hr/>
 <h3>Cоздание проекта</h3>
 <textarea id="t1">{"name":"Name","url":"URL","platform":"3","status":"4","description":""}</textarea><br/>

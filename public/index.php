@@ -40,8 +40,10 @@ $errorMiddleware->setErrorHandler(Slim\Exception\HttpNotFoundException::class, $
 
 $app->get('/', function ($request, $response) {
     $project_list = ModelProjects::project_list();
+    $project_statuses = ModelProjects::project_statuses();
+    $project_platforms = ModelProjects::project_platforms();
     $twig = $this->get(Twig::class);
-    return $twig->render($response, 'projects.html.twig', ['project_list' => $project_list]);
+    return $twig->render($response, 'projects.html.twig', ['project_list' => $project_list, 'project_statuses' => $project_statuses, 'project_platforms' => $project_platforms]);
 });
 
 

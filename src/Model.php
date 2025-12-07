@@ -22,6 +22,23 @@ class ModelProjects {
     
     }
 
+  public static function project_statuses(){
+      $results = ORM::for_table('statuses')
+        ->find_array();
+
+      return $results;
+    
+    }
+
+  public static function project_platforms(){
+      $results = ORM::for_table('platforms')
+        ->find_array();
+
+      return $results;
+    
+    }
+
+
 
   public static function insert_project($line){
 
