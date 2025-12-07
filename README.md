@@ -20,6 +20,8 @@ UBUNTU 24.04.5 (ubuntu.com download, php -v = "PHP 8.3.6 (cli)")
 > php composer.phar install  
 
 > sudo mysql < create_db.sql  
+> cp .env.example .env
+> nano .env
 
 > cd public  
 > php -S 127.0.0.1:80 (or php -S 127.0.0.1:8080)  
