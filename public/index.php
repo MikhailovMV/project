@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 require __DIR__ . '/../vendor/autoload.php';
+include __DIR__ . '/../src/boot.php';
 require __DIR__ . '/../src/Model.php';
 
 $container = new Container();
@@ -48,7 +49,7 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
     $method = $request->getMethod();
     $status = 200;
     if ($method == "POST"){
-        $data = array('name' => 'Rob1', 'age' => 10);
+        $data = $request->data();
         $payload = json_encode($data);
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
@@ -65,8 +66,11 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
         $response->getBody()->write($payload);
     }
     return $response
-              ->withHeader('Content-Type', 'application/json')
-              ->withStatus($status);
+        ->withHeader('Access-Control-Allow-Origin', $env['cors'])
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+        ->withHeader('Content-Type', 'application/json')
+        ->withStatus($status);
 });
 
 

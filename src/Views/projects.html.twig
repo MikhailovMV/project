@@ -12,7 +12,7 @@ xhr.onreadystatechange = function() {
         alert (xhr.responseText);
     }  
 };  
-const data = JSON.stringify({ key: 'value' });  
+const data = JSON.stringify({ name: 'Name', url: 'URL', platform: '3', status: '4', description: '', date_create: '2025-12-07', date_update: '2025-12-07'});  
 xhr.send(data);  
 
 }
@@ -21,7 +21,7 @@ xhr.send(data);
 </head>
 <body>
 
-<h1 onclick="f('GET');">Project list</h1>
+<h1>Project list</h1>
 <table>
 <tr> <th>id</th> <th>name</th> <th>url</th> <th>platform</th> <th>status</th> <th>description</th> <th>date_create</th> <th>date_update</th></tr>
 {% for project in project_list %} <tr><td>1{{ project.id }}</td> <td>{{ project.name }}</td> <td>{{ project.url }}</td> <td>{{ project.platform_name }}</td> <td>{{ project.status_name }}</td> <td>{{ project.description }}</td> <td>{{ project.date_create }}</td> <td>{{ project.date_update }}</td></tr> {% endfor %}
