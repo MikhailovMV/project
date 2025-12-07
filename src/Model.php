@@ -38,6 +38,17 @@ class ModelProjects {
     
     }
 
+  public static function get_project_by_id($id){
+
+      $results = ORM::for_table('projects')->select('projects.*')
+        ->select('platforms.platform_name')
+        ->select('statuses.status_name')
+        ->join('platforms', array('projects.platform', '=', 'platforms.platform_id'))
+        ->join('statuses', array('projects.status', '=', 'statuses.status_id'))
+        ->where('id', $id)->find_array();;
+      return $results;
+    
+    }
   public static function delete_project($id){
 
       $project = ORM::for_table('projects')->find_one($id);
@@ -46,6 +57,8 @@ class ModelProjects {
       return $project;
     
     }
+
+
     
     
 

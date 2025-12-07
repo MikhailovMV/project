@@ -48,6 +48,7 @@ $app->get('/', function ($request, $response) {
 $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
     $method = $request->getMethod();
     $status = 200;
+    // Добавление проекта
     if ($method == "POST"){
         $data = $request->getHeaderLine('Content-Type');;
         $contents = json_decode(file_get_contents('php://input'), true);
@@ -55,19 +56,28 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
                 $request = $request->withParsedBody($contents);
             }
             $result = ModelProjects::insert_project($contents);
-        $payload = json_encode($result);
+        $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
-        $data = array('name' => 'Rob2', 'age' => 20);
-        $payload = json_encode($data);
+        $data = array();
+
+        // Получение списка проектов
+        if (empty($args['id'])){
+            $data = ModelProjects::project_list();
+            
+        }else{
+            // Получение проекта по ID
+            $data = ModelProjects::get_project_by_id($args['id']);
+        }
+        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "PUT"){
         $data = array('name' => 'Rob3', 'age' => 30);
-        $payload = json_encode($data);
+        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "DELETE"){
         $result = ModelProjects::delete_project($args['id']);
-        $payload = json_encode($result);
+        $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }
     return $response

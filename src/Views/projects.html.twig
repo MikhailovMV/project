@@ -1,7 +1,8 @@
 <html>
 <head>
+<meta charset="utf8"></meta>
 <script language="javascript">
-function ajax_request(method, url){
+function ajax_request(method, url, data = {}){
 const xhr = new XMLHttpRequest();  
 //const url = '/api/projects/';  
 xhr.open(method, url, true);  
@@ -12,7 +13,7 @@ xhr.onreadystatechange = function() {
         alert (xhr.responseText);
     }  
 };  
-const data = JSON.stringify({ name: 'Name', url: 'URL', platform: '3', status: '4', description: '', date_create: '2025-12-07', date_update: '2025-12-07'});  
+//const data = JSON.stringify({ name: 'Name', url: 'URL', platform: '3', status: '4', description: '', date_create: '2025-12-07', date_update: '2025-12-07'});  
 xhr.send(data);  
 
 }
@@ -31,17 +32,18 @@ xhr.send(data);
 <tr> <th>id</th> <th>name</th> <th>url</th> <th>platform</th> <th>status</th> <th>description</th> <th>date_create</th> <th>date_update</th></tr>
 {% for project in project_list %} <tr><td>{{ project.id }}</td> <td>{{ project.name }}</td> <td>{{ project.url }}</td> <td>{{ project.platform_name }}</td> <td>{{ project.status_name }}</td> <td>{{ project.description }}</td> <td>{{ project.date_create }}</td> <td>{{ project.date_update }}</td></tr> {% endfor %}
 </table>
+<a href="/" title="Refresh">Обновить</a>
 <hr/>
 <h3>Cоздание проекта</h3>
 <textarea id="t1">{"name":"Name","url":"URL","platform":"3","status":"4","description":"","date_create":"2025-12-07","date_update":"2025-12-07"}</textarea><br/>
-<button onclick="ajax_request('POST','/api/projects');">POST</button><br/>
+<button onclick="ajax_request('POST','/api/projects', document.getElementById('t1').value);">POST</button><br/>
 <hr/>
 <h3>Полный список проектов</h3>
-<input type="text" value="/api/projects" id="i1"/><br/>
+<input type="text" value="/api/projects" id="i1" readonly="readonly"/><br/>
 <button onclick="ajax_request('GET','/api/projects');">GET</button> <br/><hr/>
 <h3>Получение проекта по ID</h3>
 <input type="text" value="/api/projects/1" id="i2"/><br/>
-<button onclick="ajax_request('GET','/api/projects1');">GET</button> <br/><hr/>
+<button onclick="ajax_request('GET', document.getElementById('i2').value);">GET</button> <br/><hr/>
 <h3>Фильтрация по платформе</h3>
 <input type="text" value="/api/projects?platform=WordPress" id="i3"/><br/>
 <button onclick="ajax_request('GET','/api/projects?platform=WordPress');">GET</button> <br/><hr/>
