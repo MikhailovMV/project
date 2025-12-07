@@ -15,10 +15,15 @@ xhr.onreadystatechange = function() {
     }  
 };  
 //const data = JSON.stringify({ name: 'Name', url: 'URL', platform: '3', status: '4', description: '', date_create: '2025-12-07', date_update: '2025-12-07'});  
-if (method = "POST") 
+if (method == "POST") 
     xhr.send(document.getElementById('t1').value);  
 else
-    xhr.send();  
+    if (method == "PUT"){
+        alert(method);
+        xhr.send(document.getElementById('t2').value); 
+    }else { 
+        xhr.send();
+    }  
 }
 
 </script>
@@ -63,7 +68,7 @@ else
 <h3>Обновление проекта</h3>
 <textarea id="t2">{"name":"Name","url":"URL","platform":"3","status":"4","description":""}</textarea><br/>
 <input type="text" value="/api/projects/1" id="i7"/><br/>
-<button onclick="ajax_request('PUT',document.getElementById('i8').value);">PUT</button>  <br/><hr/>
+<button onclick="ajax_request('PUT',document.getElementById('i7').value);">PUT</button>  <br/><hr/>
 <h3>Удаление проекта</h3>
 <input type="text" value="/api/projects/1" id="i8"/><br/>
 <button onclick="ajax_request('DELETE', document.getElementById('i8').value);">DELETE</button><br/><hr/>

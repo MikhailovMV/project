@@ -79,16 +79,16 @@ class ModelProjects {
     
     }
   public static function update_project($id, $line){
-      $project = ORM::for_table('person')->find_one($id)
-      ->set('name', $line['name'])
-      ->set('url', $line['url'])
-      ->set('platform', $line['platform'])
-      ->set('status', $line['status'])
-      ->set('description', $line['description'])
-      ->set('date_update', date("Y-m-d"))
-      ->save();
+      $project = ORM::for_table('projects')->find_one($id);
+      $project->set('name', $line['name']);
+      $project->set('url', $line['url']);
+      $project->set('platform', $line['platform']);
+      $project->set('status', $line['status']);
+      $project->set('description', $line['description']);
+      $project->set('date_update', date("Y-m-d"));
+      $project->save();
 
-      return $project;
+      return $line;
   }
   public static function delete_project($id){
 
