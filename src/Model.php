@@ -54,24 +54,25 @@ class ModelProjects {
     }
 
    public static function project_list_filtered($platform, $status, $page, $limit){
-      $where = "WHERE ";
-      $limit_sql = " LIMIT ";
+      $where = "WHERE 1=1 ";
+      $limit_sql = "";
       if(!empty($platform) && !empty($status)){
-          $where .= "platforms.platform_name = '".mysql_escape($platform)."' AND statuses.status_name = '".mysql_escape($status)."'";
+          $where .= "AND platforms.platform_name = '".mysql_escape($platform)."' AND statuses.status_name = '".mysql_escape($status)."'";
       }elseif(empty($platform) && !empty($status)){
-          $where .= "statuses.status_name = '".mysql_escape($status)."'";
+          $where .= "AND statuses.status_name = '".mysql_escape($status)."'";
       }elseif(!empty($platform) && empty($status)){
-          $where .= "platforms.platform_name = '".mysql_escape($platform)."'";
+          $where .= "AND platforms.platform_name = '".mysql_escape($platform)."'";
       }
 
       if(!empty($page) || !empty($limit)){
-           $limit .= (int) $limit * (( int ) $page - 1) .", ".mysql_escape($limit);
+           $limit_sql = " LIMIT " . (int) $limit * (( int ) $page - 1) .", ".mysql_escape($limit);
       }
 
       $sql = "SELECT projects.*, platforms.platform_name, statuses.status_name 
+                      FROM projects
                       LEFT JOIN platforms ON projects.platform = platforms.platform_id
-                      LEFT JOIN statuses ON projects.status = statuses.status_id ". $where. $limit_sql;
-       echo  $sql;              
+                      LEFT JOIN statuses ON projects.status = statuses.status_id ". $where. " ORDER BY projects.id" .$limit_sql;
+      // echo  $sql;              
       $results = ORM::for_table('projects')->raw_query($sql)->find_array();
 
       return $results;
