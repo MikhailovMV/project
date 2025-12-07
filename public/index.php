@@ -12,7 +12,6 @@ require __DIR__ . '/../src/Validators.php';
 require __DIR__ . '/../src/Model.php';
 Config::boot();
 $container = new Container();
-echo $platform;
 // Set view in Container
 $container->set(Twig::class, function() {
     return Twig::create(__DIR__ . '/../src/Views');
@@ -48,7 +47,7 @@ $app->get('/', function ($request, $response) {
 
 $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
     $method = $request->getMethod();
-    $status = 200;
+    $status_code = 200;
     // Добавление проекта
     if ($method == "POST"){
         $data = $request->getHeaderLine('Content-Type');;
@@ -56,23 +55,44 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
             if (json_last_error() === JSON_ERROR_NONE) {
                 $request = $request->withParsedBody($contents);
             }
-            $result = ModelProjects::insert_project($contents);
+        $result = ModelProjects::insert_project($contents);
         $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
         $data = array();
+        $platform = "";
+        $status = "";
+        $page = "";
+        $limit = "";
+        if (!empty($_GET['platform'])){
+            $platform = $_GET['platform'];
+        }
+        if (!empty($_GET['status'])){
+            $status = $_GET['status'];
+        }
+        if (!empty($_GET['page'])){
+            $page = $_GET['page'];
+        }
+        if (!empty($_GET['limit'])){
+            $limit = $_GET['limit'];
+        }
 
         // Получение списка проектов
         if (empty($args['id'])){
-            $data = ModelProjects::project_list();
-
-
-            
-            
-        }else{
+            if(!empty($platform) || !empty($status) || !empty($page) || !empty($limit)){
+                  if (empty($limit) && !empty($page)) $limit = 100;
+                  if(empty($page) && !empty($limit)) $page = 1;
+                    $data = ModelProjects::project_list_filtered($platform, $status, $page, $limit);
+            }else{
+                    // Получение списка проектов
+                var_dump($platform);
+                    $data = ModelProjects::project_list();
+            }
+         }else{
             // Получение проекта по ID
             $data = ModelProjects::get_project_by_id($args['id']);
         }
+        
         $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "PUT"){
@@ -89,7 +109,7 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
         ->withHeader('Content-Type', 'application/json')
-        ->withStatus($status);
+        ->withStatus($status_code);
 });
 
 
