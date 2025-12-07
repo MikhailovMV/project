@@ -12,6 +12,7 @@ class ModelProjects {
         ->select('statuses.status_name')
         ->join('platforms', array('projects.platform', '=', 'platforms.platform_id'))
         ->join('statuses', array('projects.status', '=', 'statuses.status_id'))
+        ->order_by_asc('projects.id')
         ->find_array();
 
       return $results;
@@ -32,6 +33,15 @@ class ModelProjects {
       $project->date_update = $line['date_update'];
 
       $project->save();
+
+      return $project;
+    
+    }
+
+  public static function delete_project($id){
+
+      $project = ORM::for_table('projects')->find_one($id);
+      $project->delete();
 
       return $project;
     

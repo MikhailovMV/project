@@ -45,7 +45,7 @@ $app->get('/', function ($request, $response) {
 });
 
 
-$app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
+$app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
     $method = $request->getMethod();
     $status = 200;
     if ($method == "POST"){
@@ -54,8 +54,8 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
             if (json_last_error() === JSON_ERROR_NONE) {
                 $request = $request->withParsedBody($contents);
             }
-            ModelProjects::insert_project($contents);
-        $payload = json_encode($contents);
+            $result = ModelProjects::insert_project($contents);
+        $payload = json_encode($result);
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
         $data = array('name' => 'Rob2', 'age' => 20);
@@ -66,8 +66,8 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
         $payload = json_encode($data);
         $response->getBody()->write($payload);
     }elseif($method == "DELETE"){
-        $data = array('name' => 'Rob4', 'age' => 40);
-        $payload = json_encode($data);
+        $result = ModelProjects::delete_project($args['id']);
+        $payload = json_encode($result);
         $response->getBody()->write($payload);
     }
     return $response
