@@ -101,10 +101,11 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
     }elseif($method == "DELETE"){
         $result = ModelProjects::delete_project($args['id']);
         $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
+        $status_code = 204;
         $response->getBody()->write($payload);
     }
     return $response
-        ->withHeader('Access-Control-Allow-Origin', Config::$env['cors'])
+        ->withHeader('Access-Control-Allow-Origin', '*')
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
         ->withHeader('Content-Type', 'application/json')

@@ -2,10 +2,11 @@
 <head>
 <meta charset="utf8"></meta>
 <script language="javascript">
-function ajax_request(method, url, data = {}){
+function ajax_request(method, url,){
 const xhr = new XMLHttpRequest();  
 //const url = '/api/projects/';  
-xhr.open(method, url, true);  
+xhr.open(method, url, true); 
+
 xhr.setRequestHeader('Content-Type', 'application/json');  
 xhr.onreadystatechange = function() {  
     if (xhr.readyState === 4 && xhr.status === 200) {  
@@ -14,8 +15,10 @@ xhr.onreadystatechange = function() {
     }  
 };  
 //const data = JSON.stringify({ name: 'Name', url: 'URL', platform: '3', status: '4', description: '', date_create: '2025-12-07', date_update: '2025-12-07'});  
-xhr.send(data);  
-
+if (method = "POST") 
+    xhr.send(document.getElementById('t1').value);  
+else
+    xhr.send();  
 }
 
 </script>
@@ -36,7 +39,7 @@ xhr.send(data);
 <hr/>
 <h3>Cоздание проекта</h3>
 <textarea id="t1">{"name":"Name","url":"URL","platform":"3","status":"4","description":"","date_create":"2025-12-07","date_update":"2025-12-07"}</textarea><br/>
-<button onclick="ajax_request('POST','/api/projects', document.getElementById('t1').value);">POST</button><br/>
+<button onclick="ajax_request('POST','/api/projects');">POST</button><br/>
 <hr/>
 <h3>Полный список проектов</h3>
 <input type="text" value="/api/projects" id="i1" readonly="readonly"/><br/>
