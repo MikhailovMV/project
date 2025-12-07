@@ -1,7 +1,7 @@
 # project
 ArtGorka Project  
 
-UBUNTU 24.04.5 (ubuntu.com download, php -v = "PHP 8.3.6 (cli)")
+UBUNTU 24.04.5 (ubuntu.com download, PHP 8.3.6 (cli), MySQL Ver 8.0.44-0ubuntu0.24.04.1 (mysqli), Composer version 2.9.2)
 
 > sudo apt install php  
 > sudo apt install mysql-client mysql-server  
