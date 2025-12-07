@@ -45,6 +45,8 @@ $app->get('/', function ($request, $response) {
 
 
 $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
+    $method = $request->getMethod();
+    var_dump($method);
     $project_list = ModelProjects::project_list();
     $twig = $this->get(Twig::class);
     return $twig->render($response, 'projects.html.twig', ['project_list' => $project_list]);
