@@ -7,11 +7,12 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 require __DIR__ . '/../vendor/autoload.php';
-include __DIR__ . '/../src/boot.php';
+require __DIR__ . '/../src/boot.php';
+require __DIR__ . '/../src/Validators.php';
 require __DIR__ . '/../src/Model.php';
 Config::boot();
 $container = new Container();
-
+echo $platform;
 // Set view in Container
 $container->set(Twig::class, function() {
     return Twig::create(__DIR__ . '/../src/Views');
@@ -64,6 +65,9 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
         // Получение списка проектов
         if (empty($args['id'])){
             $data = ModelProjects::project_list();
+
+
+            
             
         }else{
             // Получение проекта по ID

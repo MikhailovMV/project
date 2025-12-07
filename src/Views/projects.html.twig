@@ -46,16 +46,16 @@ xhr.send(data);
 <button onclick="ajax_request('GET', document.getElementById('i2').value);">GET</button> <br/><hr/>
 <h3>Фильтрация по платформе</h3>
 <input type="text" value="/api/projects?platform=WordPress" id="i3"/><br/>
-<button onclick="ajax_request('GET','/api/projects?platform=WordPress');">GET</button> <br/><hr/>
+<button onclick="ajax_request('GET', document.getElementById('i3').value);">GET</button> <br/><hr/>
 <h3>Фильтрация по статусу</h3>
 <input type="text" value="/api/projects?status=production" id="i4"/><br/>
-<button onclick="ajax_request('GET','/api/projects?status=production');">GET</button> <br/><hr/>
+<button onclick="ajax_request('GET', document.getElementById('i4').value);">GET</button> <br/><hr/>
 <h3>Комбинированная фильтрация</h3>
 <input type="text" value="/api/projects?platform=Bitrix&status=development" id="i5"/><br/>
-<button onclick="ajax_request('GET','/api/projects?platform=Bitrix&status=development');">GET</button> <br/><hr/>
+<button onclick="ajax_request('GET', document.getElementById('i6').value);">GET</button> <br/><hr/>
 <h3>Список проектов с пагинацией</h3>
 <input type="text" value="/api/projects?page=1&limit=10" id="i6"/><br/>
-<button onclick="ajax_request('GET','/api/projects?page=1&limit=10');">GET</button> <br/><hr/>
+<button onclick="ajax_request('GET',document.getElementById('i6').value);">GET</button> <br/><hr/>
 <h3>Обновление проекта</h3>
 <input type="text" value="/api/projects/1" id="i7"/><br/>
 <button onclick="ajax_request('PUT','/api/projects/1');">PUT</button>  <br/><hr/>
