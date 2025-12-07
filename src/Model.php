@@ -15,7 +15,7 @@ class ModelProjects {
       ->select('statuses.status_name')
       ->join('platforms', array('projects.platform', '=', 'platforms.platform_id'))
       ->join('statuses', array('projects.status', '=', 'statuses.status_id'))
-      ->find_many();
+      ->find_array();
 
       return $results;
     

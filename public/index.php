@@ -37,24 +37,11 @@ $customErrorHandler = function (
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 $errorMiddleware->setErrorHandler(Slim\Exception\HttpNotFoundException::class, $customErrorHandler);
 
-
 $app->get('/', function ($request, $response) {
-    $response->getBody()->write('Hello Projects');
     $project_list = ModelProjects::project_list();
-    var_dump($project_list);
-    return $response;
-});
-
-$app->get('/hello/{name}', function ($request, $response, $args) {
-    $viewData = [
-        'name' => $args['name'],
-    ];
-
     $twig = $this->get(Twig::class);
-
-    return $twig->render($response, 'projects.html.twig', $viewData);
-})->setName('projects');
-
+    return $twig->render($response, 'projects.html.twig', ['project_list' => $project_list]);
+});
 
 
 $app->run();
