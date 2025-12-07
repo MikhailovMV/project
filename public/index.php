@@ -45,13 +45,16 @@ $app->get('/', function ($request, $response) {
 });
 
 
-$app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $env) {
+$app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
     $method = $request->getMethod();
     $status = 200;
     if ($method == "POST"){
-        $data = $request->getMethod();
-        //var_dump($data);
-        $payload = json_encode($data);
+        $data = $request->getHeaderLine('Content-Type');;
+        $contents = json_decode(file_get_contents('php://input'), true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $request = $request->withParsedBody($contents);
+            }
+        $payload = json_encode($contents);
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
         $data = array('name' => 'Rob2', 'age' => 20);
