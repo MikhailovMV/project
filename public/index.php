@@ -40,8 +40,8 @@ $errorMiddleware->setErrorHandler(Slim\Exception\HttpNotFoundException::class, $
 
 $app->get('/', function ($request, $response) {
     $response->getBody()->write('Hello Projects');
-    //$project_list = ModelProjects::project_list();
-    //var_dump($project_list);
+    $project_list = ModelProjects::project_list();
+    var_dump($project_list);
     return $response;
 });
 
