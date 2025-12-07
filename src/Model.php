@@ -80,11 +80,11 @@ class ModelProjects {
     }
   public static function update_project($id, $line){
       $project = ORM::for_table('projects')->find_one($id);
-      $project->set('name', $line['name']);
-      $project->set('url', $line['url']);
-      $project->set('platform', $line['platform']);
-      $project->set('status', $line['status']);
-      $project->set('description', $line['description']);
+      if (array_key_exists('name', $line))  $project->set('name', $line['name']);
+      if (array_key_exists('url', $line)) $project->set('url', $line['url']);
+      if (array_key_exists('platform', $line))  $project->set('platform', $line['platform']);
+      if (array_key_exists('status', $line))  $project->set('status', $line['status']);
+      if (array_key_exists('description', $line)) $project->set('description', $line['description']);
       $project->set('date_update', date("Y-m-d"));
       $project->save();
 
