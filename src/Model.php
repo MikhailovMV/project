@@ -32,8 +32,8 @@ class ModelProjects {
       $project->platform = $line['platform'];
       $project->status = $line['status']; 
       $project->description = $line['description']; 
-      $project->date_create = $line['date_create']; 
-      $project->date_update = $line['date_update'];
+      $project->date_create = date("Y-m-d"); 
+      $project->date_update = date("Y-m-d");
 
       $project->save();
 
@@ -78,7 +78,18 @@ class ModelProjects {
       return $results;
     
     }
+  public static function update_project($id, $line){
+      $project = ORM::for_table('person')->find_one($id)
+      ->set('name', $line['name'])
+      ->set('url', $line['url'])
+      ->set('platform', $line['platform'])
+      ->set('status', $line['status'])
+      ->set('description', $line['description'])
+      ->set('date_update', date("Y-m-d"))
+      ->save();
 
+      return $project;
+  }
   public static function delete_project($id){
 
       $project = ORM::for_table('projects')->find_one($id);

@@ -95,8 +95,13 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
         $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "PUT"){
-        $data = array('name' => 'Rob3', 'age' => 30);
-        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $data = $request->getHeaderLine('Content-Type');;
+        $contents = json_decode(file_get_contents('php://input'), true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $request = $request->withParsedBody($contents);
+            }
+        $result = ModelProjects::update_project($args['id'], $contents);
+        $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "DELETE"){
         $result = ModelProjects::delete_project($args['id']);
