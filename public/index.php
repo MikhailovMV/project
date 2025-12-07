@@ -101,7 +101,6 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
     }elseif($method == "DELETE"){
         $result = ModelProjects::delete_project($args['id']);
         $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
-        $status_code = 204;
         $response->getBody()->write($payload);
     }
     return $response
