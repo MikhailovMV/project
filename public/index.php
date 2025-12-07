@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 require __DIR__ . '/../vendor/autoload.php';
 include __DIR__ . '/../src/boot.php';
 require __DIR__ . '/../src/Model.php';
-
+Config::boot();
 $container = new Container();
 
 // Set view in Container
@@ -45,11 +45,12 @@ $app->get('/', function ($request, $response) {
 });
 
 
-$app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
+$app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $env) {
     $method = $request->getMethod();
     $status = 200;
     if ($method == "POST"){
-        $data = $request->data();
+        $data = $request->getMethod();
+        //var_dump($data);
         $payload = json_encode($data);
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
@@ -66,7 +67,7 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
         $response->getBody()->write($payload);
     }
     return $response
-        ->withHeader('Access-Control-Allow-Origin', $env['cors'])
+        ->withHeader('Access-Control-Allow-Origin', Config::$env['cors'])
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
         ->withHeader('Content-Type', 'application/json')
