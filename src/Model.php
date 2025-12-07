@@ -87,9 +87,6 @@ class ModelProjects {
       return $project;
     
     }
-
-
-    
     
 
 }
