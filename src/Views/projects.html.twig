@@ -1,15 +1,15 @@
 <html>
 <head>
 <script language="javascript">
-function f(){
+function ajax_request(method){
 const xhr = new XMLHttpRequest();  
 const url = '/api/projects/1';  
-xhr.open('PUT', url, true);  
+xhr.open(method, url, true);  
 xhr.setRequestHeader('Content-Type', 'application/json');  
 xhr.onreadystatechange = function() {  
     if (xhr.readyState === 4 && xhr.status === 200) {  
         console.log('Resource updated successfully:', xhr.responseText);  
-        alert ("Yow!");
+        alert (xhr.responseText);
     }  
 };  
 const data = JSON.stringify({ key: 'value' });  
@@ -21,10 +21,12 @@ xhr.send(data);
 </head>
 <body>
 
-<h1 onclick="f();">Project list</h1>{{ name }}
+<h1 onclick="f('GET');">Project list</h1>
 <table>
 <tr> <th>id</th> <th>name</th> <th>url</th> <th>platform</th> <th>status</th> <th>description</th> <th>date_create</th> <th>date_update</th></tr>
 {% for project in project_list %} <tr><td>1{{ project.id }}</td> <td>{{ project.name }}</td> <td>{{ project.url }}</td> <td>{{ project.platform_name }}</td> <td>{{ project.status_name }}</td> <td>{{ project.description }}</td> <td>{{ project.date_create }}</td> <td>{{ project.date_update }}</td></tr> {% endfor %}
 </table>
+<hr/>
+<span onclick="ajax_request('POST');">POST</span> <span onclick="ajax_request('GET');">GET</span> <span onclick="ajax_request('PUT');">PUT</span> <span onclick="ajax_request('DELETE');">DELETE</span>
 </body>
 </html>

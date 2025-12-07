@@ -46,10 +46,27 @@ $app->get('/', function ($request, $response) {
 
 $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response) {
     $method = $request->getMethod();
-    var_dump($method);
-    $project_list = ModelProjects::project_list();
-    $twig = $this->get(Twig::class);
-    return $twig->render($response, 'projects.html.twig', ['project_list' => $project_list]);
+    $status = 200;
+    if ($method == "POST"){
+        $data = array('name' => 'Rob1', 'age' => 10);
+        $payload = json_encode($data);
+        $response->getBody()->write($payload);
+    }elseif($method == "GET"){
+        $data = array('name' => 'Rob2', 'age' => 20);
+        $payload = json_encode($data);
+        $response->getBody()->write($payload);
+    }elseif($method == "PUT"){
+        $data = array('name' => 'Rob3', 'age' => 30);
+        $payload = json_encode($data);
+        $response->getBody()->write($payload);
+    }elseif($method == "DELETE"){
+        $data = array('name' => 'Rob4', 'age' => 40);
+        $payload = json_encode($data);
+        $response->getBody()->write($payload);
+    }
+    return $response
+              ->withHeader('Content-Type', 'application/json')
+              ->withStatus($status);
 });
 
 
