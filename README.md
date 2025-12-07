@@ -8,7 +8,7 @@ UBUNTU 24.04.5 (ubuntu.com download, PHP 8.3.6 (cli), MySQL Ver 8.0.44-0ubuntu0.
 > sudo apt install php-mysql  
 
 
-
+> git clone https://github.com/MikhailovMV/project.git
 > cd project  
 > php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"  
 
