@@ -59,7 +59,7 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
             }
         $v1 = Validators::is_status_id_exist($contents['status']);
         $v2 = Validators::is_platform_id_exist($contents['platform']);
-        if ($v1 === True && $v2 === True){
+        if ($v1 === True && $v2 === True && array_key_exists('name', $contents) && array_key_exists('url', $contents)){
             $result = ModelProjects::insert_project($contents);
             $status_code = 201;
         }else{
@@ -129,21 +129,21 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
 
 $app->post('/api/projects/{id}/check', function ($request, $response, $args) {
 
-    $url = "https://ya.ru";   
-    $curl = curl_init($url);  
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  
-    curl_setopt($curl, CURLOPT_POST, false);  
-    $resp = curl_exec($curl);  
-    $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
-    curl_close($curl);  
+    //$url = "http://127.0.0.1";   
+    //$curl = curl_init($url);  
+    //curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  
+    //curl_setopt($curl, CURLOPT_POST, true);  
+    //$resp = curl_exec($curl);  
+    //$http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+    //curl_close($curl);  
     //echo $http_code; 
 
 
     $status_code = 200;
-    $result = $args['id'];//ModelProjects::get_project_by_id($args['id']);
-    //$content = file_get_contents($result['url']);
-    $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
-    $response->getBody()->write($http_code);
+   // $result = $args['id'];//ModelProjects::get_project_by_id($args['id']);
+    $content = file_get_contents("http://127.0.0.1");
+    //$payload = json_encode($result, JSON_UNESCAPED_UNICODE);
+    $response->getBody()->write($content);
     return $response->withStatus($status_code);
 });
 

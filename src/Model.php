@@ -48,7 +48,7 @@ class ModelProjects {
       $project->url = $line['url']; 
       $project->platform = $line['platform'];
       $project->status = $line['status']; 
-      $project->description = $line['description']; 
+      if(array_key_exists('description', $line)) $project->description = $line['description']; 
       $project->date_create = date("Y-m-d"); 
       $project->date_update = date("Y-m-d");
 
@@ -97,20 +97,23 @@ class ModelProjects {
     }
   public static function update_project($id, $line){
       $project = ORM::for_table('projects')->find_one($id);
-      if (array_key_exists('name', $line))  $project->set('name', $line['name']);
-      if (array_key_exists('url', $line)) $project->set('url', $line['url']);
-      if (array_key_exists('platform', $line))  $project->set('platform', $line['platform']);
-      if (array_key_exists('status', $line))  $project->set('status', $line['status']);
-      if (array_key_exists('description', $line)) $project->set('description', $line['description']);
-      $project->set('date_update', date("Y-m-d"));
-      $project->save();
-
+      if (!empty($project)){
+        if (array_key_exists('name', $line))  $project->set('name', $line['name']);
+        if (array_key_exists('url', $line)) $project->set('url', $line['url']);
+        if (array_key_exists('platform', $line))  $project->set('platform', $line['platform']);
+        if (array_key_exists('status', $line))  $project->set('status', $line['status']);
+        if (array_key_exists('description', $line)) $project->set('description', $line['description']);
+        $project->set('date_update', date("Y-m-d"));
+        $project->save();
+      }
       return $line;
   }
   public static function delete_project($id){
 
       $project = ORM::for_table('projects')->find_one($id);
-      $project->delete();
+      if (!empty($project)){
+        $project->delete();
+      }
 
       return $project;
     
