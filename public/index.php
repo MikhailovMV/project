@@ -8,8 +8,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../src/boot.php';
-require __DIR__ . '/../src/Validators.php';
 require __DIR__ . '/../src/Model.php';
+require __DIR__ . '/../src/Validators.php';
 Config::boot();
 $container = new Container();
 // Set view in Container
@@ -57,9 +57,16 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
             if (json_last_error() === JSON_ERROR_NONE) {
                 $request = $request->withParsedBody($contents);
             }
-        $result = ModelProjects::insert_project($contents);
-        $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
-        $status_code = 201;
+        $v1 = Validators::is_status_id_exist($contents['status']);
+        $v2 = Validators::is_platform_id_exist($contents['platform']);
+        if ($v1 === True && $v2 === True){
+            $result = ModelProjects::insert_project($contents);
+            $status_code = 201;
+        }else{
+            $status_code = 400;
+        }
+        $payload = json_encode($contents, JSON_UNESCAPED_UNICODE);//$payload = json_encode($result, JSON_UNESCAPED_UNICODE);
+        
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
         $data = array();

@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/database.php';
 
 function mysql_escape($str){
   return $str;
