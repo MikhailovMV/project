@@ -48,6 +48,8 @@ $app->get('/', function ($request, $response) {
 
 
 $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
+    $answer = Array('status' => '', 'body' => '', 'descr' => '');
+    $stat = '';
     $method = $request->getMethod();
     $status_code = 200;
     // Добавление проекта
@@ -61,11 +63,13 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
         $v2 = Validators::is_platform_id_exist($contents['platform']);
         if ($v1 === True && $v2 === True && array_key_exists('name', $contents) && array_key_exists('url', $contents)){
             $result = ModelProjects::insert_project($contents);
+            $answer['status'] = "Success";
             $status_code = 201;
         }else{
+            $answer['status'] = "Fail";
             $status_code = 400;
         }
-        $payload = json_encode($contents, JSON_UNESCAPED_UNICODE);//$payload = json_encode($result, JSON_UNESCAPED_UNICODE);
+        $payload = json_encode($answer, JSON_UNESCAPED_UNICODE);//$payload = json_encode($result, JSON_UNESCAPED_UNICODE);
         
         $response->getBody()->write($payload);
     }elseif($method == "GET"){
@@ -93,16 +97,19 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
                   if (empty($limit) && !empty($page)) $limit = 100;
                   if(empty($page) && !empty($limit)) $page = 1;
                     $data = ModelProjects::project_list_filtered($platform, $status, $page, $limit);
+                    $stat = "Success";
             }else{
                     // Получение списка проектов
                     $data = ModelProjects::project_list();
+                    $stat = "Success";
             }
          }else{
             // Получение проекта по ID
             $data = ModelProjects::get_project_by_id($args['id']);
+            $stat = "Success";
         }
-        
-        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $answer = Array('status' => $stat , 'body' => $data);
+        $payload = json_encode($answer, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "PUT"){
         $data = $request->getHeaderLine('Content-Type');;
@@ -111,11 +118,15 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
                 $request = $request->withParsedBody($contents);
             }
         $result = ModelProjects::update_project($args['id'], $contents);
-        $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
+        if (empty($result)) {$stat = "Fail"; $descr = "ID of project not exist"; } else {$stat = "Success"; $descr = ""; }
+        $answer = Array('status' => $stat , 'body' => '' ,'descr' => $descr);
+        $payload = json_encode($answer, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "DELETE"){
         $result = ModelProjects::delete_project($args['id']);
-        $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
+        if (empty($result)) {$stat = "Fail"; $descr = "ID of project not exist"; } else {$stat = "Success"; $descr = ""; }
+        $answer = Array('status' => $stat , 'body' => '' ,'descr' => $descr);
+        $payload = json_encode($answer, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }
     return $response

@@ -106,7 +106,7 @@ class ModelProjects {
         $project->set('date_update', date("Y-m-d"));
         $project->save();
       }
-      return $line;
+      return $project;
   }
   public static function delete_project($id){
 
