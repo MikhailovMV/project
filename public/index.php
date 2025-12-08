@@ -139,7 +139,7 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
 
 
 $app->post('/api/projects/{id}/check', function ($request, $response, $args) {
-
+    $answer = Array('status' => 'Success', 'body' => '', 'descr' => '');
     //$url = "http://127.0.0.1";   
     //$curl = curl_init($url);  
     //curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  
@@ -151,10 +151,28 @@ $app->post('/api/projects/{id}/check', function ($request, $response, $args) {
 
 
     $status_code = 200;
-   // $result = $args['id'];//ModelProjects::get_project_by_id($args['id']);
-    $content = file_get_contents("http://127.0.0.1");
-    //$payload = json_encode($result, JSON_UNESCAPED_UNICODE);
-    $response->getBody()->write($content);
+    $result = ModelProjects::get_project_by_id($args['id']);
+
+    $answer['body'] = $result;
+    if(empty($result)){
+        $answer['status'] = "Fail";
+        $answer['descr'] = "ID of project not exist";
+    }else{
+        $url = $result[0]['url'];
+        $url = str_replace("http://", "", $url);
+        $url = str_replace("https://", "", $url);
+        $url = "http://".$url;
+
+        $content = file_get_contents($url) ;
+        if(strlen($content) > 0){
+            $answer['descr'] = "Site avaliable";
+        }else{
+            $answer['descr'] = "Site not avaliable";
+        }
+    }
+    
+    $payload = json_encode($answer, JSON_UNESCAPED_UNICODE);
+    $response->getBody()->write($payload);
     return $response->withStatus($status_code);
 });
 
