@@ -96,6 +96,8 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
             if(!empty($platform) || !empty($status) || !empty($page) || !empty($limit)){
                   if (empty($limit) && !empty($page)) $limit = 100;
                   if(empty($page) && !empty($limit)) $page = 1;
+                  if(!empty($page)){
+                  }
                     $data = ModelProjects::project_list_filtered($platform, $status, $page, $limit);
                     $stat = "Success";
             }else{
@@ -109,6 +111,9 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
             $stat = "Success";
         }
         $answer = Array('status' => $stat , 'body' => $data);
+        if(!empty($page) && !empty($limit)){
+            $answer = Array('status' => $stat , 'body' => $data, 'page' => (int) $page, 'limit' => (int) $limit);
+        }
         $payload = json_encode($answer, JSON_UNESCAPED_UNICODE);
         $response->getBody()->write($payload);
     }elseif($method == "PUT"){
