@@ -128,12 +128,22 @@ $app->any('/api/projects[/{id:[0-9]+}]', function ($request, $response, $args) {
 
 
 $app->post('/api/projects/{id}/check', function ($request, $response, $args) {
+
+    $url = "https://ya.ru";   
+    $curl = curl_init($url);  
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  
+    curl_setopt($curl, CURLOPT_POST, false);  
+    $resp = curl_exec($curl);  
+    $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+    curl_close($curl);  
+    //echo $http_code; 
+
+
     $status_code = 200;
-    $project_list = ModelProjects::project_list();
-    $project_statuses = ModelProjects::project_statuses();
-    $project_platforms = ModelProjects::project_platforms();
-    $twig = $this->get(Twig::class);
-    $response->getBody()->write($args['id']);
+    $result = $args['id'];//ModelProjects::get_project_by_id($args['id']);
+    //$content = file_get_contents($result['url']);
+    $payload = json_encode($result, JSON_UNESCAPED_UNICODE);
+    $response->getBody()->write($http_code);
     return $response->withStatus($status_code);
 });
 
