@@ -32,3 +32,6 @@ UBUNTU 24.04.5 (ubuntu.com download, PHP 8.3.6 (cli), MySQL Ver 8.0.44-0ubuntu0.
 > mv docker-compose.yml ../docker-compose.yml
 > cd ..	
 > docker-compose up -d
+
+
+## Migrations (php vendor/bin/phinx)
