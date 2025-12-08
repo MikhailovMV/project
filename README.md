@@ -25,4 +25,10 @@ UBUNTU 24.04.5 (ubuntu.com download, PHP 8.3.6 (cli), MySQL Ver 8.0.44-0ubuntu0.
 > nano .env
 
 > cd public  
-> php -S 127.0.0.1:80 (or php -S 127.0.0.1:8080)  
+> php -S 127.0.0.1:80 (or php -S 127.0.0.1:8080) 
+
+
+## Docker (!!!not tested) TODO 
+> mv docker-compose.yml ../docker-compose.yml
+> cd ..	
+> docker-compose up -d
